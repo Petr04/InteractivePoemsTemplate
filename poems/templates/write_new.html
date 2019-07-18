@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Написать новый рассказ</h1>
+
+<form method="POST">
+	{% csrf_token %}
+	<input type="hidden" name="id" value="{{ id }}" />
+	<div class="form-group">
+		<textarea name="text" class=form-control rows="15"></textarea>
+	</div>
+	<button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+
+{% endblock %}
