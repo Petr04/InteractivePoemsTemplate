@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Коллективный разум</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	</head>
+	<body>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="/">Коллективный разум</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+					<a class="nav-link" href="/">Продолжить<span class="sr-only">(current)</span></a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/read">Читать</a>
+				</li>
+		</div>
+	</nav>
+	
+	<div class="container">
+
+		{{ text }}
+
+		<h3>Продолжить рассказ</h3>
+
+		<form method="POST">
+			{% csrf_token %}
+			<input type="hidden" name="id" value="{{ id }}" />
+			<div class="form-group">
+				<label>Текст продолжения</label>
+				<textarea name="text" class=form-control rows="15"></textarea>
+			</div>
+			<button type="submit" name="button" value="add" class="btn btn-secondary">Добавить абзац</button>
+			<button type="submit" name="button" value="write" class="btn btn-primary">Записать рассказ</button>
+		</form>
+
+	</div>
+	</body>
+</html>
