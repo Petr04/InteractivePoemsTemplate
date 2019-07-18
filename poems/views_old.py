@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 # Create your views here.
-from poems.models import Poem, Paragraph
+from poems.models import Poem
 
 
 def read(request):
@@ -24,28 +24,24 @@ def write(request):
 		poems = Poem.objects.filter(ended=False)
 		if poems.count() == 0:
 			return render(request, 'no_poems.html')
-
-		poem = random.choice(poems)
-
-		pars = Paragraph.objects.filter(poem=poem)
-
-		return render(request, 'append.html', {'pars': pars, 'id': poem.id})
+		else:
+			# выбираем один из текущих
+			poem = random.choice(poems)
+		
+		return render(request, 'append.html', {'text': poem.text, 'id': poem.id})
 
 	if request.method == 'POST':
-		poem = Poem.objects.get(pk=request.POST['id'])
+		id = request.POST['id']
+		# находим нашу поэму с конкретным id...
+		poem = Poem.objects.get(pk=id)
 
-		par = Paragraph(
-			author=request.POST['author'],
-			text=request.POST['text'],
-			poem=poem
-		)
-
-		par.save()
-
+		poem.text += request.POST['text']
 		if request.POST['button'] == 'write':
 			poem.ended = True
-			poem.save()
 
+		# сохраняем
+		poem.save()
+		# TODO: возможно, редирект на конкретный текст
 		return redirect('/')
 
 def write_new(request):
@@ -54,13 +50,7 @@ def write_new(request):
 
 	if request.method == 'POST':
 		poem = Poem()
-		par = Paragraph(
-			poem=poem,
-			author=request.POST['author'],
-			text=request.POST['text']
-		)
-
+		poem.text = request.POST['text']
 		poem.save()
-		par.save()
 
 		return redirect('/')

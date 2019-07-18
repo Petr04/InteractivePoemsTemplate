@@ -2,13 +2,22 @@
 
 {% block content %}
 
-{{ text }}
+{% for par in pars %}
+<p>
+	<span style="color: gray">{{ par.author }}</span>
+	{{ par.text }}
+</p>
+{% endfor %}
 
 <h3>Продолжить рассказ</h3>
 
 <form method="POST">
 	{% csrf_token %}
 	<input type="hidden" name="id" value="{{ id }}" />
+	<div class="form-groupr">
+		<label>Имя</label>
+		<input type="text" name="author" />
+	</div>
 	<div class="form-group">
 		<label>Текст продолжения</label>
 		<textarea name="text" class=form-control rows="15"></textarea>
