@@ -11,3 +11,4 @@ class Paragraph(models.Model):
 	)
 	author = models.CharField(max_length=16)
 	text = models.TextField()
+	last = models.BooleanField(default=False)

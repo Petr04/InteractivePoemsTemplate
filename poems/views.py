@@ -9,6 +9,9 @@ from poems.models import Poem, Paragraph
 
 def read(request):
 	poems = Poem.objects.filter(ended=True)
+	if poems.count == 0:
+		return render(request, 'no_poems.html', {'write': False})
+
 	pars = Paragraph.objects.filter(poem=random.choice(poems))
 
 	return render(request, 'read.html', {'pars': pars})
@@ -21,11 +24,11 @@ def write(request, new=False):
 		poems = Poem.objects.filter(ended=False)
 
 		if poems.count() == 0:
-			return render(request, 'no_poems.html')
+			return render(request, 'no_poems.html', {'write': True})
 
 		poem = random.choice(poems)
 
-		pars = Paragraph.objects.filter(poem=poem)
+		pars = Paragraph.objects.filter(poem=poem, last=True)
 
 		return render(
 			request, 'append.html',
@@ -38,10 +41,17 @@ def write(request, new=False):
 		else:
 			poem = Poem.objects.get(pk=request.POST['id'])
 
+			last_par = Paragraph.objects.filter(poem=poem, last=True)[0]
+			# Должен быть только один Paragraph, где last == True.
+			last_par.last = False
+			last_par.save()
+
+
 		par = Paragraph(
 			author=request.POST['author'],
 			text=request.POST['text'],
-			poem=poem
+			poem=poem,
+			last=True
 		)
 
 

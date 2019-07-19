@@ -2,8 +2,14 @@
 
 {% block content %}
 
+{% if write %}
+<h1>Неоконченных рассказов нет</h1>
+{% else %}
 <h1>Рассказов нет</h1>
-<a href="/write_new">Создать новый</a>
-<a href="/">Дописать неоконченный</a>
+{% endif %}
 
+<a href="/write_new">Создать новый</a><br>
+{% if not write %}
+<a href="/">Дописать неоконченный</a>
+{% endif %}
 {% endblock  %}
