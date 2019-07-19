@@ -3,13 +3,14 @@
 {% block content %}
 
 {% if not new %}
+<h1>Продолжить рассказ</h1>
+<h2>{{ name }}</h2>
 {% for par in pars %}
 <p>
 	<span style="color: gray">{{ par.author }}</span>
 	{{ par.text }}
 </p>
 {% endfor %}
-<h3>Продолжить рассказ</h3>
 {% else %}
 <h1>Новый рассказ</h1>
 {% endif %}
@@ -17,13 +18,16 @@
 <form method="POST">
 	{% csrf_token %}
 	<input type="hidden" name="id" value="{{ id }}" />
-	<div class="form-groupr">
-		<label>Имя</label>
-		<input type="text" name="author" />
-	</div>
 	<div class="form-group">
-		<label>Текст продолжения</label>
-		<textarea name="text" class=form-control rows="15"></textarea>
+		<input type="text" name="author" class="form-control" placeholder="Ваше имя" />
+	</div>
+	{% if new %}
+	<div class="form-group">
+		<input type="text" name="name" class="form-control" placeholder="Название рассказа" />
+	</div>
+	{% endif %}
+	<div class="form-group">
+		<textarea name="text" class=form-control rows="15" placeholder="Текст продолжения"></textarea>
 	</div>
 	<button type="submit" name="button" value="add" class="btn btn-secondary">Добавить абзац</button>
 	<button type="submit" name="button" value="write" class="btn btn-primary">Записать рассказ</button>

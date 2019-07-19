@@ -12,14 +12,15 @@ def read(request):
 	if poems.count == 0:
 		return render(request, 'no_poems.html', {'write': False})
 
-	pars = Paragraph.objects.filter(poem=random.choice(poems))
+	poem = random.choice(poems)
+	pars = Paragraph.objects.filter(poem=poem)
 
-	return render(request, 'read.html', {'pars': pars})
+	return render(request, 'read.html', {'name': poem.name, 'pars': pars})
 
 def write(request, new=False):
 	if request.method == 'GET':
 		if new:
-			return render(request, 'append.html', {'new': True})
+			return render(request, 'write.html', {'new': True})
 
 		poems = Poem.objects.filter(ended=False)
 
@@ -31,13 +32,13 @@ def write(request, new=False):
 		pars = Paragraph.objects.filter(poem=poem, last=True)
 
 		return render(
-			request, 'append.html',
-			{'pars': pars, 'id': poem.id, 'new': False}
+			request, 'write.html',
+			{'name': poem.name, 'pars': pars, 'id': poem.id, 'new': False}
 		)
 
 	if request.method == 'POST':
 		if new:
-			poem = Poem()
+			poem = Poem(name=request.POST['name'])
 		else:
 			poem = Poem.objects.get(pk=request.POST['id'])
 

@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 class Poem(models.Model):
 	ended = models.BooleanField(default=False)
+	name = models.CharField(max_length=16, default='')
 
 class Paragraph(models.Model):
 	poem = models.ForeignKey(
