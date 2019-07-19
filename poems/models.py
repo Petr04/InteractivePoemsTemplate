@@ -7,7 +7,7 @@ class Poem(models.Model):
 class Paragraph(models.Model):
 	poem = models.ForeignKey(
 		Poem,
-		on_delete=models.CASCADE
+		on_delete=models.CASCADE,
 	)
 	author = models.CharField(max_length=16)
 	text = models.TextField()
